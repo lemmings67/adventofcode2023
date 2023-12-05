@@ -75,6 +75,35 @@ public class Day4 {
         return sum;
     }
 
+    public int sumInstancesCard() {
+        int sum = 0;
+        findWinningCards();
+        //processCopyCards();
+        for (Day4CardData d : Day4CardData.getAll()) {
+            sum += d.instances;
+        }
+        return sum;
+
+    }
+
+    private void findWinningCards() {
+        for (Day4CardData d : Day4CardData.getAll()) {
+            int point = 0;
+            for (int num : d.getNumbers()) {
+                for (int win : d.getwinningNumbers()) {
+                    if (num == win) {
+                        point++;
+                    }
+                }
+            }
+            if (point > 0) {
+                for (int i=0; i < point; i++) {
+
+                }
+            }
+        }
+    }
+
     public static void main(String[] args) {
         Day4 d = new Day4("data/day4_input.txt");
         System.out.println("Result : " + d.sumWinningNumbersPower());

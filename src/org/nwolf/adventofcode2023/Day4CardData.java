@@ -8,6 +8,7 @@ public class Day4CardData {
     int cardNumber;
     int [] numbers;
     int [] winningNumbers;
+    int instances = 0;
 
     private static Vector <Day4CardData> all = new Vector <Day4CardData> ();
 
@@ -15,6 +16,7 @@ public class Day4CardData {
         this.cardNumber = cardNumber;
         this.numbers = numbers;
         this.winningNumbers = winningNumbers;
+        this.instances = 1;
     }
 
     public int getCardNumber() {
