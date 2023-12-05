@@ -88,7 +88,7 @@ public class Day5 {
 
     }
 
-    public long getSmallestDestination() {
+    public long getSmallestDestinationPartOne() {
         long smallest_destination = -1;
         for (long seed : seeds) {
             long soil = seed_to_soil_map.getDestination(seed);
@@ -105,12 +105,39 @@ public class Day5 {
         return smallest_destination;
     }
 
+    public long getSmallestDestinationPartTwo() {
+        long smallest_destination = -1;
+        for (int i = 0; i < seeds.length / 2; i+=2) {
+            long first_seed = seeds[i];
+            long range = seeds[i + 1];
+            long last_seed = first_seed + range;
+
+            for (long current_seed = first_seed; current_seed < last_seed; current_seed++) {
+                long soil = seed_to_soil_map.getDestination(current_seed);
+                long fertilizer = soil_to_fertilizer.getDestination(soil);
+                long water = fertilizer_to_water.getDestination(fertilizer);
+                long light = water_to_light.getDestination(water);
+                long temperature = light_to_temperature.getDestination(light);
+                long humidity = temperature_to_humidity.getDestination(temperature);
+                long destination = humidity_to_location.getDestination(humidity);
+                if (smallest_destination == -1 || destination < smallest_destination) {
+                    smallest_destination = destination;
+                }
+            }
+
+        }
+
+        return smallest_destination;
+    }
+
     public static void main(String[] args) {
-        Day5 test = new Day5(new File("data/day5_testdata.txt"));    
-        System.out.println("Smallest destination: " + test.getSmallestDestination());
+        Day5 test = new Day5(new File("data/day5_testdata.txt"));
+        System.out.println("Smallest destination - Part 1: " + test.getSmallestDestinationPartOne());
+        System.out.println("Smallest destination - Part 2: " + test.getSmallestDestinationPartTwo());
 
         Day5 input_dataset = new Day5(new File("data/day5_input.txt"));
-        System.out.println("Smallest destination: " + input_dataset.getSmallestDestination());
+        System.out.println("Smallest destination - Part 1: " + input_dataset.getSmallestDestinationPartOne());
+        System.out.println("Smallest destination - Part 2: " + input_dataset.getSmallestDestinationPartTwo());
 
     }
 

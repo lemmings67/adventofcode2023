@@ -12,6 +12,7 @@ public class Day5Test {
     @Test
     public void test() {
         Day5 d = new Day5(new File("data/day5_testdata.txt"));
-        assertEquals(35, d.getSmallestDestination());
+        assertEquals(35, d.getSmallestDestinationPartOne());
+        assertEquals(46, d.getSmallestDestinationPartTwo());
     }
 }
