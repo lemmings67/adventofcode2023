@@ -17,9 +17,9 @@ public class Day5Map {
     public void addLine(String map) {
         String[] mapArray = map.split(" ");
         try {
-        destination_start.add(new Long(mapArray[0]));
-        source_start.add(new Long(mapArray[1));
-        range.add(new Long(mapArray[2])); 
+            destination_start.add(Long.valueOf(mapArray[0]));
+            source_start.add(Long.valueOf(mapArray[1]));
+            range.add(Long.valueOf(mapArray[2])); 
         } catch (Exception e) {
             System.out.println("Error parsing map line: " + map);
         }
@@ -32,7 +32,8 @@ public class Day5Map {
            Long current_source_end = current_source_start + current_range;
            // Recherche de la source dans l'intervalle 
            if (source >= current_source_start && source <= current_source_end) {
-               return source + source_start.get(i) - destination_start.get(i)
+               return source + destination_start.get(i) - source_start.get(i);
+            }
         }
         return source;
     }
