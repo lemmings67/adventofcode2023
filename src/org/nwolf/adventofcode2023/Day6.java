@@ -63,7 +63,7 @@ public class Day6 {
             for (int holding_time = 1; holding_time < max_time; holding_time++) {
                 if (isWinningCombination(holding_time, distance, max_time)) race_winning_combination[i]++;
             }
-                    System.out.println("Race " + i + " : " + race_winning_combination);
+                    System.out.println("Race " + i + " : " + race_winning_combination[i]);
 
         }
 
@@ -78,7 +78,7 @@ public class Day6 {
     public static void main(String[] args) {
         System.out.println("Day 6");
         Date start_date = new Date();
-        Day6 day6 = new Day6(new File("data/day6_testdata.txt"));
+        Day6 day6 = new Day6(new File("data/day6_input.txt"));
         System.out.println("Part 1: " + day6.part1());
         Date end_date = new Date();
         System.out.println("Execution time: " + (end_date.getTime() - start_date.getTime()) + " ms");
