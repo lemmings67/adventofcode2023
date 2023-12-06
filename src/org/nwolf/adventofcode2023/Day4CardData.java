@@ -1,18 +1,24 @@
 package org.nwolf.adventofcode2023;
 
-import java.util.Enumeration;
 import java.util.Vector;
 
 public class Day4CardData {
 
-    int cardNumber;
-    int [] numbers;
-    int [] winningNumbers;
-    int instances = 0;
+    // Card number (unique)
+    private int cardNumber;
+    // Numbers on this card
+    private int[] numbers;
+    // Winning numbers for this card
+    private int[] winningNumbers;
+    // Count the number of instances of the card
+    private int instances = 0;
 
-    private static Vector <Day4CardData> all = new Vector <Day4CardData> ();
+    private int point;
+    private double power;
 
-    public Day4CardData(int cardNumber, int [] numbers, int [] winningNumbers) {
+    public static Vector<Day4CardData> scratchcards = new Vector<Day4CardData>();
+
+    public Day4CardData(int cardNumber, int[] numbers, int[] winningNumbers) {
         this.cardNumber = cardNumber;
         this.numbers = numbers;
         this.winningNumbers = winningNumbers;
@@ -23,19 +29,45 @@ public class Day4CardData {
         return this.cardNumber;
     }
 
-    public int [] getNumbers() {
+    public int[] getNumbers() {
         return this.numbers;
     }
 
-    public int [] getwinningNumbers() {
+    public int[] getwinningNumbers() {
         return this.winningNumbers;
     }
 
-    public static Vector<Day4CardData> getAll() {
-        return (Vector<Day4CardData>) all.clone();
+    public void addInstance(int copy) {
+        this.instances+=copy;
+    }
+
+    public int getPoints() {
+        int point = 0;
+        for (int num : this.getNumbers()) {
+            for (int win : this.getwinningNumbers()) {
+                if (num == win) {
+                    point++;
+                }
+            }
+        }
+        this.point = point;
+        return point;
+    }
+
+    public double getPower() {
+        double power = 0;
+        if (point > 0)
+            power = Math.pow(2, point - 1);
+        this.power = power;
+        return power;
+    }
+
+    public int getInstances() {
+        return this.instances;
     }
 
     public static void add(Day4CardData d) {
-        all.add(d);
+        scratchcards.add(d);
     }
+
 }

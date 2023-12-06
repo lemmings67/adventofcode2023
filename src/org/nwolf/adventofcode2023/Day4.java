@@ -4,10 +4,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.nwolf.adventofcode2023.Day4CardData;
 
 public class Day4 {
 
@@ -57,18 +56,9 @@ public class Day4 {
 
     public int sumWinningNumbersPower() {
         int sum = 0;
-        for (Day4CardData d : Day4CardData.getAll()) {
-            int point = 0;
-            for (int num : d.getNumbers()) {
-                for (int win : d.getwinningNumbers()) {
-                    if (num == win) {
-                        point++;
-                    }
-                }
-            }
-            double power = 0;
-            if (point > 0)
-                power = Math.pow(2, point - 1);
+        for (Day4CardData d : Day4CardData.scratchcards) {
+            int point = d.getPoints();
+            double power = d.getPower();
             System.out.println("Card " + d.getCardNumber() + " point: " + point + " power: " + power);
             sum += power;
         }
@@ -77,36 +67,28 @@ public class Day4 {
 
     public int sumInstancesCard() {
         int sum = 0;
-        findWinningCards();
-        //processCopyCards();
-        for (Day4CardData d : Day4CardData.getAll()) {
-            sum += d.instances;
+        for (int i = 0; i < Day4CardData.scratchcards.size() ; i++) {
+            Day4CardData current = Day4CardData.scratchcards.get(i);
+            int point = current.getPoints();
+            sum += current.getInstances();;
+            // Add win cards to scratchcards
+            for (int win_cards = 0; win_cards < point && win_cards < Day4CardData.scratchcards.size()-1; win_cards++) {
+                Day4CardData.scratchcards.get(i+1+win_cards).addInstance(current.getInstances());
+            }
+            System.out.println("Card " + current.getCardNumber() + " instances: " + current.getInstances());
         }
         return sum;
 
     }
 
-    private void findWinningCards() {
-        for (Day4CardData d : Day4CardData.getAll()) {
-            int point = 0;
-            for (int num : d.getNumbers()) {
-                for (int win : d.getwinningNumbers()) {
-                    if (num == win) {
-                        point++;
-                    }
-                }
-            }
-            if (point > 0) {
-                for (int i=0; i < point; i++) {
-
-                }
-            }
-        }
-    }
-
     public static void main(String[] args) {
+        System.out.println("Day 6");
+        Date start_date = new Date();    
         Day4 d = new Day4("data/day4_input.txt");
-        System.out.println("Result : " + d.sumWinningNumbersPower());
+        System.out.println("Part 1 : " + d.sumWinningNumbersPower());
+        System.out.println("Part 2 : " + d.sumInstancesCard());
+        Date end_date = new Date();
+        System.out.println("Execution time: " + (end_date.getTime() - start_date.getTime()) + " ms");
     }
 
 }
