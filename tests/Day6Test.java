@@ -10,9 +10,15 @@ import java.io.File;
 public class Day6Test {
 
     @Test
-    public void test() {
+    public void part1() {
         Day6 d = new Day6(new File("data/day6_testdata.txt"));
         assertEquals(288, d.part1());
+    }
+
+    @Test
+    public void part2() {
+        Day6 d = new Day6(new File("data/day6_testdata.txt"));
         assertEquals(71503, d.part2());
     }
+
 }
