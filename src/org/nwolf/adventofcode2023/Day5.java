@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Date;
 
 public class Day5 {
 
@@ -131,13 +132,16 @@ public class Day5 {
     }
 
     public static void main(String[] args) {
-        Day5 test = new Day5(new File("data/day5_testdata.txt"));
+        /*Day5 test = new Day5(new File("data/day5_testdata.txt"));
         System.out.println("Smallest destination - Part 1: " + test.getSmallestDestinationPartOne());
-        System.out.println("Smallest destination - Part 2: " + test.getSmallestDestinationPartTwo());
+        System.out.println("Smallest destination - Part 2: " + test.getSmallestDestinationPartTwo());*/
 
+        Date start_date = new Date();
         Day5 input_dataset = new Day5(new File("data/day5_input.txt"));
         System.out.println("Smallest destination - Part 1: " + input_dataset.getSmallestDestinationPartOne());
         System.out.println("Smallest destination - Part 2: " + input_dataset.getSmallestDestinationPartTwo());
+        Date end_date = new Date();
+        System.out.println("Execution time: " + (end_date.getTime() - start_date.getTime()) + " ms");
 
     }
 
