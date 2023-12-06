@@ -5,10 +5,13 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Date;
+import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Day4 {
+
+    private Vector<Day4CardData> scratchcards = new Vector<Day4CardData>();
 
     public Day4(String[] data) {
         for (String line : data) {
@@ -50,13 +53,13 @@ public class Day4 {
                 winningNumbers[i] = Integer.parseInt(winningNumbers_str[i]);
             }
             Day4CardData d = new Day4CardData(cardNumber, numbers, winningNumbers);
-            Day4CardData.add(d);
+            scratchcards.add(d);
         }
     }
 
     public int sumWinningNumbersPower() {
         int sum = 0;
-        for (Day4CardData d : Day4CardData.scratchcards) {
+        for (Day4CardData d : this.scratchcards) {
             int point = d.getPoints();
             double power = d.getPower();
             System.out.println("Card " + d.getCardNumber() + " point: " + point + " power: " + power);
@@ -67,13 +70,13 @@ public class Day4 {
 
     public int sumInstancesCard() {
         int sum = 0;
-        for (int i = 0; i < Day4CardData.scratchcards.size() ; i++) {
-            Day4CardData current = Day4CardData.scratchcards.get(i);
+        for (int i = 0; i < this.scratchcards.size() ; i++) {
+            Day4CardData current = this.scratchcards.get(i);
             int point = current.getPoints();
             sum += current.getInstances();;
             // Add win cards to scratchcards
-            for (int win_cards = 0; win_cards < point && win_cards < Day4CardData.scratchcards.size()-1; win_cards++) {
-                Day4CardData.scratchcards.get(i+1+win_cards).addInstance(current.getInstances());
+            for (int win_cards = 0; win_cards < point && win_cards < this.scratchcards.size()-1; win_cards++) {
+                this.scratchcards.get(i+1+win_cards).addInstance(current.getInstances());
             }
             System.out.println("Card " + current.getCardNumber() + " instances: " + current.getInstances());
         }

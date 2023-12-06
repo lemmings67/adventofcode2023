@@ -1,7 +1,5 @@
 package org.nwolf.adventofcode2023;
 
-import java.util.Vector;
-
 public class Day4CardData {
 
     // Card number (unique)
@@ -14,9 +12,6 @@ public class Day4CardData {
     private int instances = 0;
 
     private int point;
-    private double power;
-
-    public static Vector<Day4CardData> scratchcards = new Vector<Day4CardData>();
 
     public Day4CardData(int cardNumber, int[] numbers, int[] winningNumbers) {
         this.cardNumber = cardNumber;
@@ -58,16 +53,11 @@ public class Day4CardData {
         double power = 0;
         if (point > 0)
             power = Math.pow(2, point - 1);
-        this.power = power;
         return power;
     }
 
     public int getInstances() {
         return this.instances;
-    }
-
-    public static void add(Day4CardData d) {
-        scratchcards.add(d);
     }
 
 }
