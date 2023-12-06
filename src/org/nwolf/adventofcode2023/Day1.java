@@ -13,12 +13,9 @@ import java.util.regex.Pattern;
 
 public class Day1 {
 
-    private String input;
     private int calibrationNumber;
 
     public Day1(String input) {
-        this.input = input;
-
         Pattern pattern_begin = Pattern.compile(
                 "(one|two|three|four|five|six|seven|eight|nine|\\d)");
 
@@ -69,7 +66,6 @@ public class Day1 {
         // Open the file "Day1Input.txt" and read the contents into a String variable
         // called "input"
         File file = new File("data/day1_input.txt");
-        StringBuilder sb = new StringBuilder();
         BufferedReader br;
         int sum = 0;
         try {
@@ -81,10 +77,8 @@ public class Day1 {
                 sum += day1.getCalibrationNumber();
             }
         } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         System.out.println("Total : " + sum);
