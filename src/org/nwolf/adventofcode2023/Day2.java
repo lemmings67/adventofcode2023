@@ -52,7 +52,6 @@ public class Day2 {
     }
 
     public int getPowerOfCubes() {
-        int min = 0;
         int max_red_cubes = 0;
         int max_green_cubes = 0;
         int max_blue_cubes = 0;
@@ -69,7 +68,6 @@ public class Day2 {
             File file = new File(filename);
             FileReader fileReader = new FileReader(file);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
-            StringBuffer stringBuffer = new StringBuffer();
             String line;
 
             int sum = 0;
@@ -101,7 +99,6 @@ public class Day2 {
             File file = new File(filename);
             FileReader fileReader = new FileReader(file);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
-            StringBuffer stringBuffer = new StringBuffer();
             String line;
 
             int sum = 0;

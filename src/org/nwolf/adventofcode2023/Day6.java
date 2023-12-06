@@ -39,9 +39,13 @@ public class Day6 {
                 }
             }
             race_winning_combination = new int[this.distances.length];
+
+            bufferedReader.close();
+            fileReader.close();
         } catch (Exception e) {
             System.out.println("Error reading file: " + file.getName());
         }
+        
     }
 
     public boolean isWinningCombination(long holding_time, long distance, long max_time) {
