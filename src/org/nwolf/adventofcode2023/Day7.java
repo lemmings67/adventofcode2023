@@ -154,9 +154,9 @@ public class Day7 implements Comparable<Day7> {
     public HandType getHandType() {
         // Détermine le type de main
 
-        char second_kind = ' ';
-
         int first_count = 0;
+        int second_count = 0;
+        
         int first_digit = 0;
         while (first_count == 0 && first_digit < this.hands.length()) {
             for (int i = first_digit + 1; i < this.hands.length(); i++) {
@@ -169,15 +169,15 @@ public class Day7 implements Comparable<Day7> {
             first_digit++;
         }
 
-        if (first_count == 1) {
+        if (first_count == 1 || first_count == 2) {
             first_digit = 1;
             // Search second kind
-            while (second_kind == ' ' && first_digit < this.hands.length() - 1) {
+            while (second_count == 0 && first_digit < this.hands.length() - 1) {
                 for (int i = first_digit + 1; i < this.hands.length(); i++) {
                     char c = this.hands.charAt(i);
                     if (c == this.hands.charAt(first_digit) && c != first_kind) {
                         second_kind = c;
-                        break;
+                        second_count++;
                     }
                 }
                 first_digit++;
@@ -189,9 +189,14 @@ public class Day7 implements Comparable<Day7> {
             case 3:
                 return HandType.FOUR_OF_A_KIND;
             case 2:
-                return HandType.THREE_OF_A_KIND;
+                if (second_kind != '?')
+                    return HandType.FULL_HOUSE;
+                else
+                    return HandType.THREE_OF_A_KIND;
             case 1:
-                if (second_kind != ' ')
+                if (second_kind != '?')
+                    if (second_count == 2) return HandType.FULL_HOUSE;
+                    else
                     return HandType.TWO_PAIRS;
                 else
                     return HandType.ONE_PAIR;

@@ -11,6 +11,7 @@ public class Day7Test {
 
     @Test
     public void testCards() {
+        assertEquals(Day7.HandType.FULL_HOUSE, new Day7("AAABB").getHandType());
         assertEquals(Day7.HandType.FIVE_OF_A_KIND, new Day7("AAAAA").getHandType());
         assertEquals(Day7.HandType.FOUR_OF_A_KIND, new Day7("AAAA1").getHandType());
         assertEquals(Day7.HandType.FOUR_OF_A_KIND, new Day7("AAA1A").getHandType());
@@ -28,6 +29,10 @@ public class Day7Test {
         assertEquals(Day7.HandType.ONE_PAIR, new Day7("A1A23").getHandType());
         assertEquals(Day7.HandType.ONE_PAIR, new Day7("1AA23").getHandType());
         assertEquals(Day7.HandType.HIGHCARD, new Day7("A1234").getHandType());
+        assertEquals(Day7.HandType.FULL_HOUSE, new Day7("AABBB").getHandType());
+        assertEquals(Day7.HandType.FULL_HOUSE, new Day7("BBAAA").getHandType());
+        assertEquals(Day7.HandType.FULL_HOUSE, new Day7("ABABB").getHandType());
+        assertEquals(Day7.HandType.FULL_HOUSE, new Day7("ABBAB").getHandType());
     }
 
     @Test
