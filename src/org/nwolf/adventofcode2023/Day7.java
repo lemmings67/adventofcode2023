@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -94,10 +93,10 @@ public class Day7 implements Comparable<Day7> {
     private int bid;
     private String hands;
 
+    private boolean part2 = false;
+
     char first_kind = '?';
     char second_kind = '?';
-
-    public static List<Day7> dataset = new ArrayList<Day7>();
 
     public Day7(String input) {
         // Décompose les deux parties la main (hand) et la mise (bid)
@@ -115,7 +114,7 @@ public class Day7 implements Comparable<Day7> {
             while (o.getHands().charAt(i) == this.getHands().charAt(i)) {
                 i++;
             }
-            if (Card.valueOf(this.getHands().charAt(i)).getWeight() > Card.valueOf(o.getHands().charAt(i)).getWeight())
+            if (getWeight(this.getHands().charAt(i)) > Card.valueOf(o.getHands().charAt(i)).getWeight())
                 return 1;
             else if (Card.valueOf(this.getHands().charAt(i)).getWeight() == Card.valueOf(o.getHands().charAt(i)).getWeight())
                 return 0;
@@ -123,6 +122,10 @@ public class Day7 implements Comparable<Day7> {
                 return -1;
         } else
             return -1;  
+    }
+
+    private int getWeight(char charAt) {
+        return Card.valueOf(this.getHands().charAt(i)).getWeight();
     }
 
     public int getBid() {
@@ -133,7 +136,8 @@ public class Day7 implements Comparable<Day7> {
         return hands;
     }
 
-    public static void loadingInput(File file) {
+    public static List<Day7> loadingInput(File file, boolean part2) {
+        List<Day7> dataset = new ArrayList<Day7>();
         try {
             FileReader fileReader = new FileReader(file);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
@@ -141,6 +145,7 @@ public class Day7 implements Comparable<Day7> {
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 Day7 day7 = new Day7(line);
+                day7.part2 = part2;
                 dataset.add(day7);
             }
             bufferedReader.close();
@@ -149,6 +154,7 @@ public class Day7 implements Comparable<Day7> {
             e.printStackTrace();
             System.out.println("Error reading file: " + file.getName());
         }
+        return dataset;
     }
 
     public HandType getHandType() {
@@ -161,7 +167,7 @@ public class Day7 implements Comparable<Day7> {
         while (first_count == 0 && first_digit < this.hands.length()) {
             for (int i = first_digit + 1; i < this.hands.length(); i++) {
                 char c = this.hands.charAt(i);
-                if (c == this.hands.charAt(first_digit)) {
+                if (c == this.hands.charAt(first_digit) || (part2 && c == 'J')) {
                     this.first_kind = c;
                     first_count++;
                 }
@@ -175,7 +181,7 @@ public class Day7 implements Comparable<Day7> {
             while (second_count == 0 && first_digit < this.hands.length() - 1) {
                 for (int i = first_digit + 1; i < this.hands.length(); i++) {
                     char c = this.hands.charAt(i);
-                    if (c == this.hands.charAt(first_digit) && c != first_kind) {
+                    if ((c == this.hands.charAt(first_digit) && c != first_kind) || (part2 && c == 'J')) {
                         second_kind = c;
                         second_count++;
                     }
@@ -205,7 +211,7 @@ public class Day7 implements Comparable<Day7> {
         return HandType.HIGHCARD;
     }
 
-    public static long part1() {
+    public static long part1(List<Day7> dataset) {
         long result = 0;
         Collections.sort(dataset);
         for (int rank = 1; rank < dataset.size()+1; rank++) {
@@ -223,11 +229,11 @@ public class Day7 implements Comparable<Day7> {
     public static void main(String[] args) {
         System.out.println("Day 7");
         Date start_date = new Date();
-        loadingInput(new File("data/day7_input.txt"));
-        // Day7 day7 = new Day7("32T3K 765");
+        List<Day7> dataset_v1 = loadingInput(new File("data/day7_input.txt"), false);
         System.out.println("------");
-        System.out.println("Part 1: " + part1());
-        System.out.println("Part 2: " + part2());
+        System.out.println("Part 1: " + part1(dataset_v1));
+        List<Day7> dataset_v2 = loadingInput(new File("data/day7_testdata.txt"), true);
+        System.out.println("Part 2: " + part1(dataset_v2));
         Date end_date = new Date();
         System.out.println("Execution time: " + (end_date.getTime() - start_date.getTime()) + " ms");
     }

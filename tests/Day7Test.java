@@ -6,6 +6,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.nwolf.adventofcode2023.Day7;
 import java.io.File;
+import java.util.List;
 
 public class Day7Test {
 
@@ -37,8 +38,8 @@ public class Day7Test {
 
     @Test
     public void part1() {
-        Day7.loadingInput(new File("data/day7_testdata.txt"));
-        assertEquals(6440, Day7.part1());
+        List<Day7> dataset = Day7.loadingInput(new File("data/day7_testdata.txt"), false);
+        assertEquals(6440, Day7.part1(dataset));
     }
 
     @Test
