@@ -72,7 +72,7 @@ public class Day7 implements Comparable<Day7> {
                     return _2;
             }
             return null;
-        }   
+        }
     }
 
     // Enumération des types de mains et de leurs poids
@@ -102,30 +102,36 @@ public class Day7 implements Comparable<Day7> {
         // Décompose les deux parties la main (hand) et la mise (bid)
         String[] decompose = input.split(" ");
         this.hands = decompose[0];
-        if (decompose.length > 1) this.bid = Integer.parseInt(decompose[1]);
+        if (decompose.length > 1)
+            this.bid = Integer.parseInt(decompose[1]);
     }
 
     @Override
     public int compareTo(Day7 o) {
         if (this.getHandType().getWeight() > o.getHandType().getWeight())
-            return 1; 
+            return 1;
         else if (this.getHandType().getWeight() == o.getHandType().getWeight()) {
             int i = 0;
             while (o.getHands().charAt(i) == this.getHands().charAt(i)) {
                 i++;
             }
-            if (getWeight(this.getHands().charAt(i)) > Card.valueOf(o.getHands().charAt(i)).getWeight())
+            if (getWeight(this.getHands().charAt(i)) > getWeight(o.getHands().charAt(i)))
                 return 1;
-            else if (Card.valueOf(this.getHands().charAt(i)).getWeight() == Card.valueOf(o.getHands().charAt(i)).getWeight())
+            else if (getWeight(this.getHands().charAt(i)) == getWeight(o.getHands().charAt(i)))
                 return 0;
             else
                 return -1;
         } else
-            return -1;  
+            return -1;
     }
 
+    // Renvoi le poids d'une carte
+    // En mode part2, le poids de la carte J est 0
     private int getWeight(char charAt) {
-        return Card.valueOf(this.getHands().charAt(i)).getWeight();
+        int weight = Card.valueOf(charAt).getWeight();
+        if (part2 && charAt == 'J')
+            weight = 0;
+        return weight;
     }
 
     public int getBid() {
@@ -162,12 +168,16 @@ public class Day7 implements Comparable<Day7> {
 
         int first_count = 0;
         int second_count = 0;
+
+        String hands = this.hands;
+        // Première passe pour supprimer les J
+        if (part2) hands = hands.replaceAll("J", "");
         
         int first_digit = 0;
-        while (first_count == 0 && first_digit < this.hands.length()) {
-            for (int i = first_digit + 1; i < this.hands.length(); i++) {
-                char c = this.hands.charAt(i);
-                if (c == this.hands.charAt(first_digit) || (part2 && c == 'J')) {
+        while (first_count == 0 && first_digit < hands.length()) {
+            for (int i = first_digit + 1; i < hands.length(); i++) {
+                char c = hands.charAt(i);
+                if (c == hands.charAt(first_digit)) {
                     this.first_kind = c;
                     first_count++;
                 }
@@ -178,10 +188,10 @@ public class Day7 implements Comparable<Day7> {
         if (first_count == 1 || first_count == 2) {
             first_digit = 1;
             // Search second kind
-            while (second_count == 0 && first_digit < this.hands.length() - 1) {
-                for (int i = first_digit + 1; i < this.hands.length(); i++) {
-                    char c = this.hands.charAt(i);
-                    if ((c == this.hands.charAt(first_digit) && c != first_kind) || (part2 && c == 'J')) {
+            while (second_count == 0 && first_digit < hands.length() - 1) {
+                for (int i = first_digit + 1; i < hands.length(); i++) {
+                    char c = hands.charAt(i);
+                    if ((c == hands.charAt(first_digit) && c != first_kind)) {
                         second_kind = c;
                         second_count++;
                     }
@@ -189,6 +199,34 @@ public class Day7 implements Comparable<Day7> {
                 first_digit++;
             }
         }
+
+        // Echange les deux meilleurs combinaisons si nécessaire
+        if (first_count < second_count) {
+            char tmp = first_kind;
+            first_kind = second_kind;
+            second_kind = tmp;
+            int tmp_count = first_count;
+            first_count = second_count;
+            second_count = tmp_count;
+        }
+
+        // Compte les J
+        int joker = 0;
+        if (part2) {
+            for (int i = 0; i < this.hands.length(); i++) {
+                char c = this.hands.charAt(i);
+                if (c == 'J') {
+                    joker++;
+                } 
+            }
+            if (joker > 2) {
+                System.out.println(" " + this.hands + " " + joker + " JOKER !!!");
+                second_count += joker;
+            } else {
+                first_count += joker;
+            }
+        }
+        
         switch (first_count) {
             case 4:
                 return HandType.FIVE_OF_A_KIND;
@@ -211,18 +249,14 @@ public class Day7 implements Comparable<Day7> {
         return HandType.HIGHCARD;
     }
 
-    public static long part1(List<Day7> dataset) {
+    public static long calculateTotalWinnings(List<Day7> dataset) {
         long result = 0;
         Collections.sort(dataset);
-        for (int rank = 1; rank < dataset.size()+1; rank++) {
-            System.out.println("Rank " + rank + " " + dataset.get(rank-1).getHands() + " " + dataset.get(rank-1).getBid() + " : " + dataset.get(rank-1).getHandType());
-            result += dataset.get(rank-1).getBid()*rank;
+        for (int rank = 1; rank < dataset.size() + 1; rank++) {
+            System.out.println("Rank " + rank + " " + dataset.get(rank - 1).getHands() + " "
+                    + dataset.get(rank - 1).getBid() + " : " + dataset.get(rank - 1).getHandType());
+            result += dataset.get(rank - 1).getBid() * rank;
         }
-        return result;
-    }
-
-    public static long part2() {
-        long result = 0;
         return result;
     }
 
@@ -231,9 +265,9 @@ public class Day7 implements Comparable<Day7> {
         Date start_date = new Date();
         List<Day7> dataset_v1 = loadingInput(new File("data/day7_input.txt"), false);
         System.out.println("------");
-        System.out.println("Part 1: " + part1(dataset_v1));
-        List<Day7> dataset_v2 = loadingInput(new File("data/day7_testdata.txt"), true);
-        System.out.println("Part 2: " + part1(dataset_v2));
+        System.out.println("Part 1: " + calculateTotalWinnings(dataset_v1));
+        List<Day7> dataset_v2 = loadingInput(new File("data/day7_input.txt"), true);
+        System.out.println("Part 2: " + calculateTotalWinnings(dataset_v2));
         Date end_date = new Date();
         System.out.println("Execution time: " + (end_date.getTime() - start_date.getTime()) + " ms");
     }

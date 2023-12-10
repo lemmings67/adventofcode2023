@@ -39,13 +39,13 @@ public class Day7Test {
     @Test
     public void part1() {
         List<Day7> dataset = Day7.loadingInput(new File("data/day7_testdata.txt"), false);
-        assertEquals(6440, Day7.part1(dataset));
+        assertEquals(6440, Day7.calculateTotalWinnings(dataset));
     }
 
     @Test
     public void part2() {
-        // Day6 d = new Day6(new File("data/day6_testdata.txt"));
-        // assertEquals(71503, d.part2());
+        List<Day7> dataset_v2 = Day7.loadingInput(new File("data/day7_testdata.txt"), true);
+        assertEquals(5905, Day7.calculateTotalWinnings(dataset_v2));
     }
 
 }
