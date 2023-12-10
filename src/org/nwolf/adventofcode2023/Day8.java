@@ -38,7 +38,7 @@ public class Day8 {
                     if (matcher.find()) {
                         Day8 day8 = new Day8(matcher.group(1), matcher.group(2), matcher.group(3));
                         dataset.put(day8.source_node, day8);
-                    } 
+                    }
 
                     if (line.matches("[LR]+")) {
                         directions = line;
@@ -64,15 +64,17 @@ public class Day8 {
         // On continue tant qu'on n'est pas arrivé au noeud ZZZ
         while (next_node.equals("ZZZ") == false) {
             Day8 current_node = dataset_v1.get(next_node);
-            // Répéter la direction autant de fois que nécessaire, si on arrive a la fin de la chaine, on recommence (avec le modulo)
-            current_direction = directions.charAt(steps%directions.length());
-            
+            // Répéter la direction autant de fois que nécessaire, si on arrive a la fin de
+            // la chaine, on recommence (avec le modulo)
+            current_direction = directions.charAt(steps % directions.length());
+
             if (current_direction == 'L') {
                 next_node = current_node.destination_left_node;
             } else {
                 next_node = current_node.destination_right_node;
             }
-            System.out.println("Step " + steps + " " + current_node.source_node + ' ' + current_direction + " -> " + next_node);
+            System.out.println(
+                    "Step " + steps + " " + current_node.source_node + ' ' + current_direction + " -> " + next_node);
 
             steps++;
         }
@@ -80,10 +82,55 @@ public class Day8 {
         return steps;
     }
 
-
     public static int part2(HashMap<String, Day8> dataset) {
         int steps = 0;
-        
+        char current_direction = 'R';
+
+        boolean all_nodes = true;
+
+        // Find all source node ending with A
+        List<String> next_nodes = new ArrayList<String>();
+        for (String key : dataset.keySet()) {
+            if (key.endsWith("A")) {
+                next_nodes.add(key);
+            }
+        }
+
+        // On continue tant que l'ensemble des noeuds de départ ne sont pas arrivés à
+        // ZZZ
+        while (all_nodes) {
+            // Répéter la direction autant de fois que nécessaire, si on arrive a la fin de
+            // la chaine, on recommence (avec le modulo)
+            current_direction = directions.charAt(steps % directions.length());
+
+            // Clone next_nodes to current_nodes
+            List<String> current_nodes = new ArrayList<String>(next_nodes);
+
+            for (int i = 0; i < current_nodes.size(); i++) {
+                Day8 current_node = dataset.get(current_nodes.get(i));
+
+                if (current_direction == 'L') {
+                    next_nodes.set(i, current_node.destination_left_node);
+                } else {
+                    next_nodes.set(i, current_node.destination_right_node);
+                }
+
+                /*System.out.println("Step " + steps + " " + current_node.source_node + ' ' + current_direction
+                        + " -> " + next_nodes.get(i));*/
+
+            }
+
+            // Si l'ensembles noeuds se termine par un Z on a fini
+            all_nodes = false;
+            for (String node : next_nodes) {
+                if (node.endsWith("Z") == false) {
+                    all_nodes = true;
+                }
+            }
+
+            steps++;
+        }
+
         return steps;
     }
 
@@ -91,13 +138,10 @@ public class Day8 {
         System.out.println("Day 8");
         HashMap<String, Day8> dataset = loadingInput("data/day8_input.txt");
         Date start_date = new Date();
-        System.out.println("Part 1: " + part1(dataset) + " steps");
+        // System.out.println("Part 1: " + part1(dataset) + " steps");
         System.out.println("Part 2: " + part2(dataset) + " steps");
         Date end_date = new Date();
         System.out.println("Execution time: " + (end_date.getTime() - start_date.getTime()) + " ms");
     }
-
-
-   
 
 }
